@@ -1,0 +1,20 @@
+﻿@using ISOBAR.Models
+@model List<Band>
+
+
+<div id="bandList">
+    @foreach (var band in Model)
+    {
+        <div class="band">
+            <div class="image-container">
+                <img src="@band.Image" alt="@band.Name" class="band-image">
+            </div>
+            <div class="band-details">
+                <div class="band-name">
+                    <a href="@Url.Page("/BandDetails", new { id = band.Id })" class="band-name-link">@band.Name.ToUpper()</a>
+                </div>
+                <div class="band-plays">@band.NumPlays.ToString().ToUpper() Plays</div>
+            </div>
+        </div>
+    }
+</div>

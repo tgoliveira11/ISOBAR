@@ -1,0 +1,92 @@
+﻿@page
+@model ISOBAR.Pages.IndexModel
+
+<div id="bandList">
+    @foreach (var band in Model.Bands)
+    {
+        <div class="band">
+            <div class="image-container">
+                <img src="@band.Image" alt="@band.Name" class="band-image">
+            </div>
+            <div class="band-details">
+                <div class="band-name">
+                    <a href="@Url.Page("/BandDetails", new { id = band.Id })" class="band-name-link">@band.Name.ToUpper()</a>
+                </div>
+                <div class="band-plays">@band.NumPlays.ToString().ToUpper() Plays</div>
+            </div>
+        </div>
+    }
+</div>
+
+<button id="orderButton" class="fixed-order-button">
+    <i class="bi bi-arrow-down-up"></i>
+</button>
+
+<div id="floatingWindow" class="floating-window">
+    <div class="content">
+        <button id="alphabeticalButton" style="background-color: gray; color: white; border: 0;">Order by Alphabet</button>
+        <button id="popularityButton" style="background-color: gray; color: white; border: 0;">Order by Popularity</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var pageIndex = @Model.PageIndex;
+        var isLoading = false;
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200 && !isLoading) {
+                loadMoreBands();
+            }
+        });
+
+        function loadMoreBands() {
+            isLoading = true;
+
+            $.ajax({
+                type: "GET",
+                url: "/BandList/?orderBy=@Request.Query["orderBy"]",
+                data: { pageIndex: pageIndex + 1 },
+                success: function (data) {
+                    pageIndex++;
+                    $("#bandList").append(data);
+                    isLoading = false;
+                },
+                error: function () {
+                    isLoading = false;
+                }
+            });
+        }
+
+        var orderButton = document.getElementById('orderButton');
+        var floatingWindow = document.getElementById('floatingWindow');
+        var alphabeticalButton = document.getElementById('alphabeticalButton');
+        var popularityButton = document.getElementById('popularityButton');
+
+        orderButton.addEventListener('mouseenter', function () {
+            floatingWindow.classList.add('active');
+        });
+
+        orderButton.addEventListener('mouseleave', function () {
+            floatingWindow.classList.remove('active');
+        });
+
+        floatingWindow.addEventListener('mouseenter', function () {
+            floatingWindow.classList.add('active');
+        });
+
+        floatingWindow.addEventListener('mouseleave', function () {
+            floatingWindow.classList.remove('active');
+        });
+
+        alphabeticalButton.addEventListener('click', function () {
+            location.href = "?orderBy=alphabetical";
+        });
+
+        popularityButton.addEventListener('click', function () {
+            location.href = "?orderBy=popularity";
+        });
+    </script>
+
+
+}

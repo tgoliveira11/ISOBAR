@@ -1,0 +1,198 @@
+﻿@page
+@model BandDetailsModel
+
+<style>
+    .band-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .band-line {
+        display: flex;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        position: relative;
+    }
+
+    .band-column {
+        flex: 1;
+        padding: 0;
+        margin: 0;
+    }
+
+    .band-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .band-name {
+        position: absolute;
+        top: calc(2 / 3 * 100%);
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .band-details-line {
+        display: flex;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        z-index: 100;
+    }
+
+    .band-details-column {
+        flex: 1;
+        padding: 0;
+        margin: 0;
+    }
+
+    .band-genre {
+        color: silver;
+        text-transform: uppercase;
+        margin-left: 20px;
+    }
+
+    .band-plays {
+        color: silver;
+        text-align: right;
+        margin-right: 20px;
+    }
+
+    .band-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: -50px;
+    }
+
+        .band-icon img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid black;
+        }
+
+    .band-biography {
+        padding: 20px;
+        text-align: justify;
+    }
+
+    .band-biography-justified::after {
+        content: "";
+        display: inline-block;
+        width: 100%;
+    }
+
+    .band-albums {
+        display: flex;
+        width: 100%;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .band-album {
+        flex: 0 0 100px;
+        margin: 10px;
+    }
+
+    .band-album-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .band-albums-title {
+        text-align: center;
+    }
+
+    .band-albums-line {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .band-album-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .btn-floating-left {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        padding: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+
+        .btn-floating-left i {
+            font-size: 24px;
+            color: #000000;
+        }
+</style>
+
+<div class="band-container">
+    <!-- Back button -->
+    <a href="/Index" class="btn-floating-left">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div class="band-line">
+        <div class="band-column">
+            <div class="band-image-container">
+                <img src="@Model.Band.Image" alt="@Model.Band.Name" class="band-image">
+                <h2 class="band-name">@Model.Band.Name</h2>
+            </div>
+        </div>
+    </div>
+    <div class="band-details-line">
+        <div class="band-details-column">
+            <p class="band-genre">@Model.Band.Genre</p>
+        </div>
+        <div class="band-details-column">
+            <div class="band-icon">
+                <img src="@Model.Band.Image" alt="Band Icon">
+            </div>
+        </div>
+        <div class="band-details-column">
+            <p class="band-plays">@Model.Band.NumPlays.ToString() Plays</p>
+        </div>
+    </div>
+    <div class="band-line">
+        <div class="band-column">
+            <p class="band-biography band-biography-justified">
+                @Model.Band.Biography
+            </p>
+        </div>
+    </div>
+    <div class="band-line">
+        <div class="band-column">
+            <h3 class="band-albums-title">ALBUMS</h3>
+        </div>
+    </div>
+    <div class="band-line">
+        <div class="band-column">
+            <div class="band-albums-line">
+                @foreach (var album in Model.Band.AlbumsList)
+                {
+                    <div class="band-album">
+                        <img src="@album.Image" alt="Album Image" class="band-album-image" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
